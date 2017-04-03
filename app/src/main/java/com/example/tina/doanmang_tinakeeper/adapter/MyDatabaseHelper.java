@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -70,8 +69,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
     public void createDefaultExpenseIfNeed() {
         int count = this.getExpenseCount();
         if(count ==0 ) {
-            Expense note1 = new Expense(1,"Food", "Eating out",20000, Date.valueOf("27-03-2017"));
-            Expense note2 = new Expense(2,"Salary", "Salary of February",1000000,Date.valueOf("11-03-2017"));
+            Expense note1 = new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11"));
+            Expense note2 = new Expense(2,"Salary", "Salary of February",1000000,Date.valueOf("2017-03-27"));
             this.addExpense(note1);
             this.addExpense(note2);
         }
@@ -123,7 +122,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
         Cursor cursor = db.query(TABLE_EXPENSE, new String[] { COLUMN_EXPENSE_ID,
                         COLUMN_EXPENSE_CATEGORY, COLUMN_EXPENSE_NOTES,COLUMN_EXPENSE_MONEY,
                         COLUMN_EXPENSE_DATE }, COLUMN_EXPENSE_ID + "=?",
-                        new String[] { String.valueOf(id) }, null, null, null, null);
+                new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
@@ -151,7 +150,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
                 expense.setCategory(cursor.getString(1));
                 expense.setNotes(cursor.getString(2));
                 expense.setMoney(Integer.parseInt(cursor.getString(3)));
-                Log.i(TAG,cursor.getString(4));
+//                Log.i(TAG,cursor.getString(4));
 //                expense.setDate(cursor.getString(4));
                 // Thêm vào danh sách.
                 list.add(expense);
@@ -184,6 +183,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_EXPENSE, COLUMN_EXPENSE_ID + " = ?",
                 new String[] { String.valueOf(Expense.getId()) });
+        db.close();
+    }
+
+    public void deleteExpense(int id){
+        Log.i(TAG, "MyDatabaseHelper.updateExpense ... " + id );
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_EXPENSE, COLUMN_EXPENSE_ID + " = ?",
+                new String[] { String.valueOf(id) });
         db.close();
     }
 }

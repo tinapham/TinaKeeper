@@ -55,9 +55,7 @@ public class Expense {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = Date.valueOf(date);
-    }
+    public void setDate(Date date) {this.date = date;}
 
     public String getCategory() {
         return category;
@@ -90,5 +88,7 @@ public class Expense {
     public void setPhotoID(int photoID) {
         this.photoID = photoID;
     }
+
+
 
 }

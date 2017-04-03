@@ -29,6 +29,7 @@ import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
 import com.example.tina.doanmang_tinakeeper.adapter.RecyclerDataAdapter;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -154,15 +155,15 @@ public class DayList extends Fragment {
         }
     };
 
-//    // Người dùng đồng ý xóa một Expense.
-//    private void deleteExpense(Expense expense)  {
-//        MyDatabaseHelper db = new MyDatabaseHelper(getContext());
-//        db.deleteExpense(expense);
-//        this.expenseList.remove(expense);
-//        // Refresh ListView.
-//        this.adapter.notifyDataSetChanged();
-//    }
-//
+    // Người dùng đồng ý xóa một Expense.
+    private void deleteExpense(Expense expense)  {
+        MyDatabaseHelper db = new MyDatabaseHelper(getContext());
+        db.deleteExpense(expense);
+        this.expenseList.remove(expense);
+        // Refresh ListView.
+        this.adapter.notifyDataSetChanged();
+    }
+
 //    @Override
 //    public boolean onContextItemSelected(MenuItem item){
 //        AdapterView.AdapterContextMenuInfo
@@ -206,17 +207,17 @@ public class DayList extends Fragment {
 //    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (resultCode == Activity.RESULT_OK && requestCode == MY_REQUEST_CODE ) {
-//            boolean needRefresh = data.getBooleanExtra("needRefresh",true);
-//            // Refresh ListView
-//            if(needRefresh) {
-//                this.expenseList.clear();
-//                MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
-//                List<Expense> list=  db.getAllExpense();
-//                this.expenseList.addAll(list);
-//                // Thông báo dữ liệu thay đổi (Để refresh ListView).
-//                this.adapter.notifyDataSetChanged();
-//            }
-//        }
+        if (resultCode == Activity.RESULT_OK && requestCode == MY_REQUEST_CODE ) {
+            boolean needRefresh = data.getBooleanExtra("needRefresh",true);
+            // Refresh ListView
+            if(needRefresh) {
+                this.expenseList.clear();
+                MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
+                List<Expense> list=  db.getAllExpense();
+                this.expenseList.addAll(list);
+                // Thông báo dữ liệu thay đổi (Để refresh ListView).
+                this.adapter.notifyDataSetChanged();
+            }
+        }
     }
 }
