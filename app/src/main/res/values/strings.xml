@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">DoAnMang-TinaKeeper</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!--String relate to list of category-->
+    <string-array name="cate_array">
+        <item>Deposits</item>
+        <item>Salary</item>
+        <item>Savings</item>
+        <item>Food</item>
+        <item>Shopping</item>
+        <item>Bills</item>
+        <item>Transport</item>
+        <item>Communications</item>
+        <item>Entertainment</item>
+        <item>Gifts</item>
+        <item>Health</item>
+        <item>Sport</item>
+        <item>Education</item>
+        <item>Travel</item>
+        <item>Family</item>
+        <item>Business</item>
+        <item>Insurance</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Names -->
+    <string-array name="category">
+        <item>Ăn uống</item>
+        <item>Di chuyển</item>
+        <item>Du lịch</item>
+        <item>Lương</item>
+        <item>Tiền lãi</item>
+        <item>Giáo dục</item>
+    </string-array>
+
+    <!-- Pictures -->
+    <array name="category_pics">
+        <item>@drawable/ic_food</item>
+        <item>@drawable/ic_direction</item>
+        <item>@drawable/ic_travel</item>
+        <item>@drawable/ic_salary</item>
+        <item>@drawable/ic_interest</item>
+        <item>@drawable/ic_education</item>
+    </array>
+
+    <!-- Status -->
+    <string-array name="notes">
+        <item>Quán Zé Food</item>
+        <item>Đổ xăng</item>
+        <item>Hội An</item>
+        <item></item>
+        <item>Sổ tiết kiệm</item>
+        <item>Sách Rich Man</item>
+    </string-array>
+
+    <!-- Money -->
+    <integer-array name="cost">
+        <item>20000</item>
+        <item>50000</item>
+        <item>130000</item>
+        <item>8000000</item>
+        <item>70000</item>
+        <item>55000</item>
+    </integer-array>
+</resources>
