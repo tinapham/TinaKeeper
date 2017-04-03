@@ -58,6 +58,7 @@ public class AddEditExpense extends AppCompatActivity implements AdapterView.OnI
         //Định dạng kiểu ngày / tháng /năm
         dft=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String textDate=dft.format(cal.getTime());
+        date = cal.getTime();
         //hiển thị lên giao diện
         txtDate.setText(textDate);
         //show cửa sổ datepicker
@@ -143,7 +144,7 @@ public class AddEditExpense extends AppCompatActivity implements AdapterView.OnI
     public void buttonSaveClicked(View view)  {
         MyDatabaseHelper db = new MyDatabaseHelper(this);
         //đưa dữ liệu để lưu trữ vào database
-        int money;
+        double money;
         if(this.txtMoney.getText().toString().equals("")){
             money =0;
         } else {
