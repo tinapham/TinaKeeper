@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.tina.doanmang_tinakeeper.SendMail"
+    android:layout_margin="20dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Gửi báo cáo"
+        android:textSize="25sp"
+        android:textColor="#33691E"/>
+    <LinearLayout
+         android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn ngày"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <RadioButton
+        android:id="@+id/btn_choose_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ngày" />
+
+    <RadioButton
+        android:id="@+id/btn_choose_month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tháng" />
+
+    <RadioButton
+        android:id="@+id/btn_choose_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Năm" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gửi"
+        />
+</LinearLayout>

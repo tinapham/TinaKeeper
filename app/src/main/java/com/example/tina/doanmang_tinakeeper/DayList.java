@@ -108,23 +108,23 @@ public class DayList extends Fragment {
         recyclerview.setAdapter(adapter);
         //Log.e(STATE,String.valueOf(adapter.getItemCount()));
         // Đăng ký Context menu cho recyclerview.
-//        registerForContextMenu(this.recyclerview);
+        registerForContextMenu(this.recyclerview);
         return view;
     }
 
-//    @Override
-//    public void onCreateContextMenu(ContextMenu menu, View view,
-//                                    ContextMenu.ContextMenuInfo menuInfo)    {
-//
-//        super.onCreateContextMenu(menu, view, menuInfo);
-//        menu.setHeaderTitle("Select The Action");
-//
-//        // groupId, itemId, order, title
-//        menu.add(0, MENU_ITEM_VIEW , 0, "View Expense");
-//        menu.add(0, MENU_ITEM_CREATE , 1, "Create Expense");
-//        menu.add(0, MENU_ITEM_EDIT , 2, "Edit Expense");
-//        menu.add(0, MENU_ITEM_DELETE, 4, "Delete Expense");
-//    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view,
+                                    ContextMenu.ContextMenuInfo menuInfo)    {
+
+        super.onCreateContextMenu(menu, view, menuInfo);
+        menu.setHeaderTitle("Select The Action");
+
+        // groupId, itemId, order, title
+        menu.add(0, MENU_ITEM_VIEW , 0, "View Expense");
+        menu.add(0, MENU_ITEM_CREATE , 1, "Create Expense");
+        menu.add(0, MENU_ITEM_EDIT , 2, "Edit Expense");
+        menu.add(0, MENU_ITEM_DELETE, 4, "Delete Expense");
+    }
 
 
     View.OnClickListener showDatePicker = new View.OnClickListener() {
