@@ -7,10 +7,8 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.example.tina.doanmang_tinakeeper.R;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
@@ -58,7 +56,7 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<RecyclerDataAdapte
             @Override
             public void onClick(View v) {
 
-//                Toast.makeText(context,"clicked"+pos, Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"clicked"+pos, Toast.LENGTH_LONG).show();
             }
         });
     }

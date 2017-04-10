@@ -13,9 +13,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by TiNa on 26/03/2017.
- */
 
 public class MyDatabaseHelper extends SQLiteOpenHelper  {
     private static final String TAG = "SQLite";
@@ -67,12 +64,22 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
     // Nếu trong bảng Note chưa có dữ liệu,
     // Trèn vào mặc định 2 bản ghi.
     public void createDefaultExpenseIfNeed() {
+//        int count = this.getExpenseCount();
+//        if(count ==0 ) {
+//            Expense note1 = new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11"));
+//            Expense note2 = new Expense(2,"Salary", "Salary of February",1000000,Date.valueOf("2017-03-27"));
+//            this.addExpense(note1);
+//            this.addExpense(note2);
+//        }
+
+
         int count = this.getExpenseCount();
         if(count ==0 ) {
             Expense note1 = new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11"));
-            Expense note2 = new Expense(2,"Salary", "Salary of February",1000000,Date.valueOf("2017-03-27"));
-            this.addExpense(note1);
-            this.addExpense(note2);
+            Expense note2 = new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11"));
+            //Expense note2 = new Expense(2,"Salary", "Salary of February",1000,Date.valueOf("2017-03-27"));
+            this.addE(note1);
+            this.addE(note2);
         }
     }
     //đếm số bản ghi
@@ -90,6 +97,26 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
         // return count
         return count;
     }
+
+
+
+
+    public void addE(Expense expense) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_EXPENSE_ID,expense.getId());
+        values.put(COLUMN_EXPENSE_CATEGORY, expense.getCategory());
+        values.put(COLUMN_EXPENSE_NOTES, expense.getNotes());
+        values.put(COLUMN_EXPENSE_MONEY,expense.getMoney());
+        values.put(COLUMN_EXPENSE_DATE,String.valueOf(expense.getDate()));
+
+        // Inserting Row
+        db.insert(TABLE_EXPENSE, null, values);
+        db.close(); // Closing database connection
+    }
+
+
     //thêm bản ghi
     public void addExpense(Expense expense) {
         Log.i(TAG, "MyDatabaseHelper.addNote ... " + expense.getCategory());
@@ -113,6 +140,18 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
 
         // Đóng kết nối database.
         db.close();
+
+//        void addContact(Expense expense) {
+//            SQLiteDatabase db = this.getWritableDatabase();
+//
+//            ContentValues values = new ContentValues();
+//            values.put(KEY_CATEGORY, expense.getCategory()); // Expense Name
+//            values.put(KEY_NOTES, expense.getNotes()); // Expense Phone
+//
+//            // Inserting Row
+//            db.insert(TABLE_EXPENSE, null, values);
+//            db.close(); // Closing database connection
+//        }
     }
 
     public Expense getExpense(int id) {
@@ -125,9 +164,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
-
         Expense expense = new Expense(Integer.parseInt(cursor.getString(0)),cursor.getString(1),
-                cursor.getString(2), Integer.parseInt(cursor.getString(3)), Date.valueOf(cursor.getString(4)));
+                    cursor.getString(2), Integer.parseInt(cursor.getString(3)), Date.valueOf(cursor.getString(4)));
+        cursor.close();
         return expense;
     }
 
@@ -145,18 +184,22 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
         // Duyệt trên con trỏ, và thêm vào danh sách.
         if (cursor.moveToFirst()) {
             do {
+                String id = cursor.getString(0);
+                String cate = cursor.getString(1);
+                String notes = cursor.getString(2);
+                double money = cursor.getDouble(3);
                 Expense expense = new Expense();
                 expense.setId(Integer.parseInt(cursor.getString(0)));
                 expense.setCategory(cursor.getString(1));
                 expense.setNotes(cursor.getString(2));
-                expense.setMoney(Integer.parseInt(cursor.getString(3)));
+                expense.setMoney(money);
 //                Log.i(TAG,cursor.getString(4));
 //                expense.setDate(cursor.getString(4));
                 // Thêm vào danh sách.
                 list.add(expense);
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         // return note list
         return list;
     }

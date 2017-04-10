@@ -3,33 +3,25 @@ package com.example.tina.doanmang_tinakeeper;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
 import com.example.tina.doanmang_tinakeeper.adapter.RecyclerDataAdapter;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -98,7 +90,16 @@ public class DayList extends Fragment {
             }
         });
 
-
+//        private int id;
+//        private String category;
+//        private String notes;
+//        private double money;
+//        private Date date;
+//        private int photoID;
+//
+//        expenseList.add(new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11")));
+//        expenseList.add(new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11")));
+//        expenseList.add(new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11")));
         //cấu hình cho recyclerview
         recyclerview = (RecyclerView) view.findViewById(R.id.rv_list_day);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
