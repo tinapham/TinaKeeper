@@ -54,9 +54,7 @@ public class AddEditExpense extends AppCompatActivity implements AdapterView.OnI
 
         //Set ngày giờ hiện tại khi mới chạy lần đầu
         cal=Calendar.getInstance();
-        SimpleDateFormat dft=null;
-        //Định dạng kiểu ngày / tháng /năm
-        dft=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        SimpleDateFormat dft=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String textDate=dft.format(cal.getTime());
         date = cal.getTime();
         //hiển thị lên giao diện
@@ -151,10 +149,10 @@ public class AddEditExpense extends AppCompatActivity implements AdapterView.OnI
             money = Integer.parseInt(this.txtMoney.getText().toString());
         }
         Date day = new Date(date.getTime());
+        Log.i(TAG,String.valueOf(day));
         String note = this.txtNote.getText().toString();
         String category = this.textCategory;
         int id = db.getExpenseCount()+1;
-        Log.i(TAG,String.valueOf(id));
 
         if(money ==0){
             Toast.makeText(getBaseContext(),

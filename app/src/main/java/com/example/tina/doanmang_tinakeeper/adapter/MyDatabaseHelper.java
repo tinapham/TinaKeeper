@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +40,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
         try{
             String script = "CREATE TABLE " + TABLE_EXPENSE + "("
                     + COLUMN_EXPENSE_ID + " INTEGER PRIMARY KEY," + COLUMN_EXPENSE_CATEGORY + " NVARCHAR(50),"
-                    + COLUMN_EXPENSE_NOTES + " NVARCHAR(100)," + COLUMN_EXPENSE_MONEY + "INTEGER,"
-                    + COLUMN_EXPENSE_DATE + "DATE" +")";
+                    + COLUMN_EXPENSE_NOTES + " NVARCHAR(100)," + COLUMN_EXPENSE_MONEY + " INTEGER,"
+                    + COLUMN_EXPENSE_DATE + " TEXT" +")";
             // Chạy lệnh tạo bảng.
             db.execSQL(script);
         } catch (Exception e){
@@ -76,10 +77,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
         int count = this.getExpenseCount();
         if(count ==0 ) {
             Expense note1 = new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11"));
-            Expense note2 = new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11"));
-            //Expense note2 = new Expense(2,"Salary", "Salary of February",1000,Date.valueOf("2017-03-27"));
-            this.addE(note1);
-            this.addE(note2);
+            Expense note2 = new Expense(2,"Food", "Zé house",100000, Date.valueOf("2017-04-17"));
+            this.addExpense(note1);
+            this.addExpense(note2);
         }
     }
     //đếm số bản ghi
@@ -119,25 +119,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
 
     //thêm bản ghi
     public void addExpense(Expense expense) {
-        Log.i(TAG, "MyDatabaseHelper.addNote ... " + expense.getCategory());
+        Log.i(TAG, "MyDatabaseHelper.addNote ... " + expense.getDateString());
 
         SQLiteDatabase db = this.getWritableDatabase();
-
         String sql = "INSERT INTO EXPENSE VALUES (" + expense.getId()+",'"+expense.getCategory()+"','"
-                + expense.getNotes()+"',"+expense.getMoney()+","+expense.getDate()+")";
+                + expense.getNotes()+"',"+expense.getMoney()+",'"+expense.getDateString()+"')";
 
         db.execSQL(sql);
-
-//        ContentValues values = new ContentValues();
-//        values.put(COLUMN_EXPENSE_ID,expense.getId());
-//        values.put(COLUMN_EXPENSE_CATEGORY, expense.getCategory());
-//        values.put(COLUMN_EXPENSE_NOTES, expense.getNotes());
-//        values.put(COLUMN_EXPENSE_MONEY,expense.getMoney());
-//        values.put(COLUMN_EXPENSE_DATE,String.valueOf(expense.getDate()));
-//
-//        // Trèn một dòng dữ liệu vào bảng.
-//        db.insert(TABLE_EXPENSE, null, values);
-
         // Đóng kết nối database.
         db.close();
 
@@ -167,6 +155,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
         Expense expense = new Expense(Integer.parseInt(cursor.getString(0)),cursor.getString(1),
                     cursor.getString(2), Integer.parseInt(cursor.getString(3)), Date.valueOf(cursor.getString(4)));
         cursor.close();
+        db.close();
         return expense;
     }
 
@@ -184,22 +173,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
         // Duyệt trên con trỏ, và thêm vào danh sách.
         if (cursor.moveToFirst()) {
             do {
-                String id = cursor.getString(0);
-                String cate = cursor.getString(1);
-                String notes = cursor.getString(2);
-                double money = cursor.getDouble(3);
                 Expense expense = new Expense();
                 expense.setId(Integer.parseInt(cursor.getString(0)));
                 expense.setCategory(cursor.getString(1));
                 expense.setNotes(cursor.getString(2));
-                expense.setMoney(money);
-//                Log.i(TAG,cursor.getString(4));
-//                expense.setDate(cursor.getString(4));
+                expense.setMoney(cursor.getDouble(3));
+                Date date = Date.valueOf(cursor.getString(4));
+                Log.i(TAG,String.valueOf(date));
+                expense.setDate(date);
                 // Thêm vào danh sách.
                 list.add(expense);
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
         // return note list
         return list;
     }

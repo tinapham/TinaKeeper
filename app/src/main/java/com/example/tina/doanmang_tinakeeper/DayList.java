@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
 import com.example.tina.doanmang_tinakeeper.adapter.RecyclerDataAdapter;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,31 +58,26 @@ public class DayList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_day_list, container, false);
-
-        btnGetDate= (Button) view.findViewById(R.id.button_getdate);
-
-//        cau hinh cho button lay ngay thang nam
-        //Set ngày giờ hiện tại khi mới chạy lần đầu
-        cal=Calendar.getInstance();
-        SimpleDateFormat dft=null;
-        //Định dạng kiểu ngày / tháng /năm
-        dft=new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String strDate=dft.format(cal.getTime());
-//        hiển thị lên giao diện
-        btnGetDate.setText(strDate);
+        getFormWidgets();
+        getDefaultInfor();
         btnGetDate.setOnClickListener(showDatePicker);
 
         //cấu hình database
         try{
-            MyDatabaseHelper db = new MyDatabaseHelper(getContext());
+            this.expenseList.clear();
+            MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
             db.createDefaultExpenseIfNeed();//tạo 2 bản ghi mặc định
-            List<Expense> list=  db.getAllExpense();
+//            List<Expense> list=  sortByDay(db.getAllExpense(),Date.valueOf("2017-04-17"));
+            Log.i(TAG,new Date(date.getTime()).toString());
+            List<Expense> list=  sortByDay(db.getAllExpense(),new Date(date.getTime()));
             this.expenseList.addAll(list);
         } catch (Exception e){
             e.printStackTrace();
         }
+//        new DayList().reloadList(db,new Date(date.getTime()));
+//        new DayList().reloadList(db,Date.valueOf("2017-03-11"));
 
-        //Xử lý nút (+)
+                //Xử lý nút (+)
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,30 +86,30 @@ public class DayList extends Fragment {
                 startActivityForResult(intent,MY_REQUEST_CODE);
             }
         });
-
-//        private int id;
-//        private String category;
-//        private String notes;
-//        private double money;
-//        private Date date;
-//        private int photoID;
-//
-//        expenseList.add(new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11")));
-//        expenseList.add(new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11")));
-//        expenseList.add(new Expense(1,"Food", "Eating out",20000, Date.valueOf("2017-03-11")));
         //cấu hình cho recyclerview
-        recyclerview = (RecyclerView) view.findViewById(R.id.rv_list_day);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerview.setLayoutManager(layoutManager);
 
         adapter = new RecyclerDataAdapter(getContext(), expenseList);
         recyclerview.setAdapter(adapter);
-        //Log.e(STATE,String.valueOf(adapter.getItemCount()));
         // Đăng ký Context menu cho recyclerview.
         registerForContextMenu(this.recyclerview);
         return view;
     }
-
+    public void getFormWidgets(){
+        btnGetDate= (Button) view.findViewById(R.id.button_getdate);
+        recyclerview = (RecyclerView) view.findViewById(R.id.rv_list_day);
+    }
+    public void getDefaultInfor() {
+        //Set ngày giờ hiện tại khi mới chạy lần đầu
+        cal=Calendar.getInstance();
+        date = cal.getTime();
+        SimpleDateFormat dft=null;
+        dft=new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String strDate=dft.format(cal.getTime());
+//        hiển thị lên giao diện
+        btnGetDate.setText(strDate);
+    }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view,
                                     ContextMenu.ContextMenuInfo menuInfo)    {
@@ -140,6 +137,8 @@ public class DayList extends Fragment {
                     //Lưu vết lại ngày mới cập nhật
                     cal.set(year, month, day);
                     date = cal.getTime();
+                    reloadList(new Date(date.getTime()));
+                    adapter.notifyDataSetChanged();
                 }
             };
             String s = btnGetDate.getText() + "";
@@ -212,13 +211,35 @@ public class DayList extends Fragment {
             boolean needRefresh = data.getBooleanExtra("needRefresh",true);
             // Refresh ListView
             if(needRefresh) {
-                this.expenseList.clear();
-                MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
-                List<Expense> list=  db.getAllExpense();
-                this.expenseList.addAll(list);
-                // Thông báo dữ liệu thay đổi (Để refresh ListView).
-                this.adapter.notifyDataSetChanged();
+//                this.expenseList.clear();
+//                MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
+////                List<Expense> list=  db.getAllExpense();
+//                List<Expense> list=  sortByDay(db.getAllExpense(),new Date(date.getTime()));
+//                this.expenseList.addAll(list);
+//                // Thông báo dữ liệu thay đổi (Để refresh ListView).
+//                this.adapter.notifyDataSetChanged();
+
+                reloadList(new Date(date.getTime()));
+                adapter.notifyDataSetChanged();
             }
         }
+    }
+
+    public static List<Expense> sortByDay(List<Expense> list, Date requires){
+        List<Expense> result = new ArrayList<Expense>();
+        for(int i=0;i<list.size();i++){
+//            Log.i(TAG,list.get(i).getDateString());
+            if(list.get(i).getDateString().equals(requires.toString())) {
+                result.add(list.get(i));
+            }
+        }
+        return result;
+    }
+
+    public void reloadList(Date date){
+        expenseList.clear();
+        MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
+        List<Expense> list=  sortByDay(db.getAllExpense(),date);
+        expenseList.addAll(list);
     }
 }

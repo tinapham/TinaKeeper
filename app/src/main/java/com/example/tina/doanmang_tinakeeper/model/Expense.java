@@ -2,6 +2,7 @@ package com.example.tina.doanmang_tinakeeper.model;
 
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by TiNa on 06/03/2017.
@@ -53,6 +54,12 @@ public class Expense {
     }
     public Date getDate() {
         return date;
+    }
+
+    public String getDateString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String result = String.valueOf(dateFormat.format(date));
+        return result;
     }
 
     public void setDate(Date date) {this.date = date;}
