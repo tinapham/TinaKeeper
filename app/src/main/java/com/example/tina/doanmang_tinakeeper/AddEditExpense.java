@@ -93,7 +93,6 @@ public class AddEditExpense extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         textCategory= listCategory[position];
-        Log.i(TAG,textCategory);
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
@@ -149,7 +148,6 @@ public class AddEditExpense extends AppCompatActivity implements AdapterView.OnI
             money = Integer.parseInt(this.txtMoney.getText().toString());
         }
         Date day = new Date(date.getTime());
-        Log.i(TAG,String.valueOf(day));
         String note = this.txtNote.getText().toString();
         String category = this.textCategory;
         int id = db.getExpenseCount()+1;
@@ -161,6 +159,7 @@ public class AddEditExpense extends AppCompatActivity implements AdapterView.OnI
         }
 
         this.expense= new Expense(id,category,note,money,day);
+//        this.expense= new Expense(id,category,note,money,day);
         db.addExpense(expense);
 
 

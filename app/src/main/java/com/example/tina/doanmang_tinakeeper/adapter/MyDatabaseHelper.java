@@ -41,7 +41,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
             String script = "CREATE TABLE " + TABLE_EXPENSE + "("
                     + COLUMN_EXPENSE_ID + " INTEGER PRIMARY KEY," + COLUMN_EXPENSE_CATEGORY + " NVARCHAR(50),"
                     + COLUMN_EXPENSE_NOTES + " NVARCHAR(100)," + COLUMN_EXPENSE_MONEY + " INTEGER,"
-                    + COLUMN_EXPENSE_DATE + " TEXT" +")";
+                    + COLUMN_EXPENSE_DATE + " TEXT"+")";
             // Chạy lệnh tạo bảng.
             db.execSQL(script);
         } catch (Exception e){
@@ -97,25 +97,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
         // return count
         return count;
     }
-
-
-
-
-    public void addE(Expense expense) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_EXPENSE_ID,expense.getId());
-        values.put(COLUMN_EXPENSE_CATEGORY, expense.getCategory());
-        values.put(COLUMN_EXPENSE_NOTES, expense.getNotes());
-        values.put(COLUMN_EXPENSE_MONEY,expense.getMoney());
-        values.put(COLUMN_EXPENSE_DATE,String.valueOf(expense.getDate()));
-
-        // Inserting Row
-        db.insert(TABLE_EXPENSE, null, values);
-        db.close(); // Closing database connection
-    }
-
 
     //thêm bản ghi
     public void addExpense(Expense expense) {
@@ -178,9 +159,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
                 expense.setCategory(cursor.getString(1));
                 expense.setNotes(cursor.getString(2));
                 expense.setMoney(cursor.getDouble(3));
-                Date date = Date.valueOf(cursor.getString(4));
-                Log.i(TAG,String.valueOf(date));
-                expense.setDate(date);
+//                Date date = cursor.getString(4);
+                Log.i(TAG,cursor.getString(4));
+                expense.setDate(Date.valueOf(cursor.getString(4)));
+                Log.i(TAG,expense.toString());
                 // Thêm vào danh sách.
                 list.add(expense);
             } while (cursor.moveToNext());

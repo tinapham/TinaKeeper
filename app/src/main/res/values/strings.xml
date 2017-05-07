@@ -31,43 +31,25 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- Names -->
-    <string-array name="category">
-        <item>Ăn uống</item>
-        <item>Di chuyển</item>
-        <item>Du lịch</item>
-        <item>Lương</item>
-        <item>Tiền lãi</item>
-        <item>Giáo dục</item>
-    </string-array>
-
     <!-- Pictures -->
     <array name="category_pics">
-        <item>@drawable/ic_food</item>
-        <item>@drawable/ic_direction</item>
-        <item>@drawable/ic_travel</item>
-        <item>@drawable/ic_salary</item>
-        <item>@drawable/ic_interest</item>
-        <item>@drawable/ic_education</item>
+        <item name="deposits">@drawable/ic_interest</item>
+        <item name="salary">@drawable/ic_salary</item>
+        <item name="savings">@drawable/ic_saving</item>
+        <item name="food">@drawable/ic_food</item>
+        <item name="shopping">@drawable/ic_shopping</item>
+        <item name="bills">@drawable/ic_bills</item>
+        <item name="transport">@drawable/ic_direction</item>
+        <item name="communications">@drawable/ic_communication</item>
+        <item name="entertainment">@drawable/ic_entertainment</item>
+        <item name="gifts">@drawable/ic_gift</item>
+        <item name="health">@drawable/ic_health</item>
+        <item name="sport">@drawable/ic_sport</item>
+        <item name="education">@drawable/ic_education</item>
+        <item name="travel">@drawable/ic_travel</item>
+        <item name="family">@drawable/ic_family</item>
+        <item name="business">@drawable/ic_business</item>
+        <item name="insurance">@drawable/ic_insurance</item>
     </array>
 
-    <!-- Status -->
-    <string-array name="notes">
-        <item>Quán Zé Food</item>
-        <item>Đổ xăng</item>
-        <item>Hội An</item>
-        <item></item>
-        <item>Sổ tiết kiệm</item>
-        <item>Sách Rich Man</item>
-    </string-array>
-
-    <!-- Money -->
-    <integer-array name="cost">
-        <item>20000</item>
-        <item>50000</item>
-        <item>130000</item>
-        <item>8000000</item>
-        <item>70000</item>
-        <item>55000</item>
-    </integer-array>
 </resources>

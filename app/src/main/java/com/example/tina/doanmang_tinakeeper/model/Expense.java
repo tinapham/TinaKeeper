@@ -20,20 +20,14 @@ public class Expense {
         this.notes = null;
         this.money = 0;
         this.date = null;
+        this.photoID = 0;
     }
-    public Expense(String category, String notes, double money, Date date) {
+    public Expense(int id, String category, String notes, double money, Date date) {
+        this.id = id;
         this.category = category;
         this.notes = notes;
         this.money = money;
         this.date = date;
-    }
-
-    public Expense(String category, String notes, double money, int photoID) {
-        this.category = category;
-        this.notes = notes;
-        this.money = money;
-        this.photoID = photoID;
-
     }
 
     public int getId() {
@@ -44,12 +38,13 @@ public class Expense {
         this.id = id;
     }
 
-    public Expense(int id, String category, String notes, double money, Date date) {
+    public Expense(int id, String category, String notes, double money, Date date, int photoID) {
         this.id = id;
         this.category = category;
         this.notes = notes;
         this.money = money;
         this.date = date;
+        this.photoID =photoID;
 
     }
     public Date getDate() {
@@ -96,6 +91,8 @@ public class Expense {
         this.photoID = photoID;
     }
 
-
+    public String toString(){
+        return this.category + ";" + this.notes +" "+ this.money+" "+this.getDateString();
+    }
 
 }

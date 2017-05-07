@@ -7,6 +7,7 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +48,6 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<RecyclerDataAdapte
     public void onBindViewHolder(RecyclerDataAdapter.DataViewHolder holder, int position) {
         holder.tvCategory.setText(expense.get(position).getCategory());
         holder.tvNote.setText(expense.get(position).getNotes());
-        //holder.ivPic.setImageResource(expense.get(position).getPhotoID());
         holder.tvExpense.setText(String.valueOf(expense.get(position).getMoney()));
 
         final int pos=position;
@@ -76,7 +76,6 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<RecyclerDataAdapte
             cardView = (CardView) itemView.findViewById(R.id.cv);
             tvCategory = (TextView) itemView.findViewById(R.id.category);
             tvNote = (TextView) itemView.findViewById(R.id.notes);
-            //ivPic = (ImageView) itemView.findViewById(R.id.category_pic);
             tvExpense = (TextView) itemView.findViewById(R.id.cost_value);
             itemView.setOnCreateContextMenuListener(this);
         }

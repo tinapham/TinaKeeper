@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,10 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
 import com.example.tina.doanmang_tinakeeper.adapter.RecyclerDataAdapter;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
+import com.github.clans.fab.FloatingActionButton;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -37,20 +38,16 @@ import java.util.Locale;
 
 public class DayList extends Fragment {
     private static final String TAG = "DAYLIST";
-    private static final String STATE = "Trang thai";
     private static final int MENU_ITEM_VIEW = 111;
     private static final int MENU_ITEM_EDIT = 222;
     private static final int MENU_ITEM_CREATE = 333;
     private static final int MENU_ITEM_DELETE = 444;
     private static final int MY_REQUEST_CODE = 1000;
     private Button btnGetDate;
+    private TextView txtTotal;
     private View view;
     private RecyclerView recyclerview;
     private RecyclerDataAdapter adapter;
-    private String[] names;
-    private TypedArray profile_pics;
-    private String[] emails;
-    private int[] costs;
     private Calendar cal;
     private java.util.Date date;
     private final List<Expense> expenseList = new ArrayList<Expense>();
@@ -67,17 +64,16 @@ public class DayList extends Fragment {
             this.expenseList.clear();
             MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
             db.createDefaultExpenseIfNeed();//tạo 2 bản ghi mặc định
-//            List<Expense> list=  sortByDay(db.getAllExpense(),Date.valueOf("2017-04-17"));
             Log.i(TAG,new Date(date.getTime()).toString());
             List<Expense> list=  sortByDay(db.getAllExpense(),new Date(date.getTime()));
+//            List<Expense> list=  db.getAllExpense();
+            calculateMoney(list);
             this.expenseList.addAll(list);
         } catch (Exception e){
             e.printStackTrace();
         }
-//        new DayList().reloadList(db,new Date(date.getTime()));
-//        new DayList().reloadList(db,Date.valueOf("2017-03-11"));
 
-                //Xử lý nút (+)
+        //Xử lý nút (+)
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +82,7 @@ public class DayList extends Fragment {
                 startActivityForResult(intent,MY_REQUEST_CODE);
             }
         });
+
         //cấu hình cho recyclerview
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerview.setLayoutManager(layoutManager);
@@ -99,6 +96,7 @@ public class DayList extends Fragment {
     public void getFormWidgets(){
         btnGetDate= (Button) view.findViewById(R.id.button_getdate);
         recyclerview = (RecyclerView) view.findViewById(R.id.rv_list_day);
+        txtTotal = (TextView) view.findViewById(R.id.txt_total);
     }
     public void getDefaultInfor() {
         //Set ngày giờ hiện tại khi mới chạy lần đầu
@@ -124,7 +122,6 @@ public class DayList extends Fragment {
         menu.add(0, MENU_ITEM_DELETE, 4, "Delete Expense");
     }
 
-
     View.OnClickListener showDatePicker = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -137,6 +134,7 @@ public class DayList extends Fragment {
                     //Lưu vết lại ngày mới cập nhật
                     cal.set(year, month, day);
                     date = cal.getTime();
+                    //Load lại list theo ngày
                     reloadList(new Date(date.getTime()));
                     adapter.notifyDataSetChanged();
                 }
@@ -211,14 +209,6 @@ public class DayList extends Fragment {
             boolean needRefresh = data.getBooleanExtra("needRefresh",true);
             // Refresh ListView
             if(needRefresh) {
-//                this.expenseList.clear();
-//                MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
-////                List<Expense> list=  db.getAllExpense();
-//                List<Expense> list=  sortByDay(db.getAllExpense(),new Date(date.getTime()));
-//                this.expenseList.addAll(list);
-//                // Thông báo dữ liệu thay đổi (Để refresh ListView).
-//                this.adapter.notifyDataSetChanged();
-
                 reloadList(new Date(date.getTime()));
                 adapter.notifyDataSetChanged();
             }
@@ -240,6 +230,24 @@ public class DayList extends Fragment {
         expenseList.clear();
         MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
         List<Expense> list=  sortByDay(db.getAllExpense(),date);
+        calculateMoney(list);
         expenseList.addAll(list);
+    }
+
+    public void calculateMoney(List<Expense> list){
+        double income=0;
+        double expense=0;
+        double total=0;
+        for(int i=0;i<list.size();i++){
+            String category = list.get(i).getCategory();
+            double money = list.get(i).getMoney();
+            if(category.equals("Deposits")||category.equals("Salary")||category.equals("Savings")){
+                income+=money;
+            } else {
+                expense+=money;
+            }
+        }
+        total = income - expense;
+        txtTotal.setText(String.valueOf(total));
     }
 }
