@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,11 +13,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,12 +51,12 @@ public class AddEditExpenseActivity extends AppCompatActivity implements Adapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_expense);
+        getFormWidget();
 
-        txtMoney = (EditText) findViewById(R.id.txt_money);
-        txtNote = (EditText) findViewById(R.id.txt_note);
-        txtDate = (EditText) findViewById(R.id.txt_date);
-        btnDate = (ImageButton) findViewById(R.id.btn_date);
-
+        Intent intent = this.getIntent();
+        Gson gson = new Gson();
+        String strObj = intent.getStringExtra("expense");
+        expense = gson.fromJson(strObj, Expense.class);
 
         //Set ngày giờ hiện tại khi mới chạy lần đầu
         cal=Calendar.getInstance();
@@ -63,9 +69,7 @@ public class AddEditExpenseActivity extends AppCompatActivity implements Adapter
         btnDate.setOnClickListener(showDatePicker);
         txtDate.setOnClickListener(showDatePicker);
 
-
         //Spinner list category
-        spinnerCategory = (Spinner) findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         listCategory = getResources().getStringArray(R.array.cate_array);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -76,19 +80,34 @@ public class AddEditExpenseActivity extends AppCompatActivity implements Adapter
         spinnerCategory.setAdapter(adapter);
         spinnerCategory.setOnItemSelectedListener(this);
 
-//        Intent intent = this.getIntent();
-//        this.expense = (Expense) intent.getSerializableExtra("expense");
-//        if(expense== null)  {
-//            this.mode = MODE_CREATE;
-//        } else  {
-//            this.mode = MODE_EDIT;
-//            this.txtMoney.setText(expense.getMoney());
-//            this.txtDate.setText(String.valueOf(expense.getDate()));
-//            this.txtNote.setText(expense.getNotes());
-//            //this.spinnerCategory.set
-//        }
+        if(expense== null)  {
+            this.mode = MODE_CREATE;
+        } else  {
+            this.mode = MODE_EDIT;
+            String result = String.valueOf(dft.format(expense.getDate()));
+            this.txtMoney.setText(String.valueOf(expense.getMoney()));
+            this.txtDate.setText(result);
+            this.txtNote.setText(expense.getNotes());
+            this.spinnerCategory.setSelection(getIndex(spinnerCategory, expense.getCategory()));
+        }
     }
-    //Class tạo sự kiện
+    public void getFormWidget(){
+        txtMoney = (EditText) findViewById(R.id.txt_money);
+        txtNote = (EditText) findViewById(R.id.txt_note);
+        txtDate = (EditText) findViewById(R.id.txt_date);
+        btnDate = (ImageButton) findViewById(R.id.btn_date);
+        spinnerCategory = (Spinner) findViewById(R.id.spinner);
+    }
+    //get Index for Spinner
+    private int getIndex(Spinner spinner, String myString){
+        int index = 0;
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).equals(myString)){
+                index = i;
+            }
+        }
+        return index;
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -139,47 +158,38 @@ public class AddEditExpenseActivity extends AppCompatActivity implements Adapter
 
     // Người dùng Click vào nút Save.
     public void buttonSaveClicked(View view)  {
-        try{
-            MyDatabaseHelper db = new MyDatabaseHelper(this);
-            //đưa dữ liệu để lưu trữ vào database
-            long money;
-            if(this.txtMoney.getText().toString().equals("")){
-                money =0;
-            } else {
-                money = Long.parseLong(this.txtMoney.getText().toString());
-            }
-            Date day = new Date(date.getTime());
-            String note = this.txtNote.getText().toString();
-            String category = this.textCategory;
-            Random rn = new Random();
-            int id = rn.nextInt(16000);
-
-            if(money ==0){
-                Toast.makeText(getBaseContext(),
-                        "Please enter value", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            this.expense= new Expense(id,category,note,money,day);
-//        this.expense= new Expense(id,category,note,money,day);
-            db.addExpense(expense);
-        } catch (Exception e){
-            e.printStackTrace();
+        MyDatabaseHelper db = new MyDatabaseHelper(this);
+        //đưa dữ liệu để lưu trữ vào database
+        long money;
+        if(this.txtMoney.getText().toString().equals("")){
+            money =0;
+        } else {
+            money = Long.parseLong(this.txtMoney.getText().toString());
         }
-
-
-
-//        if(mode==MODE_CREATE ) {
-//            this.expense= new Expense(id,category,note,money,new Date(dateStr));
-//            db.addExpense(expense);
-//        } else  {
-//            this.expense.setMoney(money);
-//            this.expense.setCategory(category);
-//            this.expense.setNotes(note);
-//            this.expense.setCategory(category);
-//            db.updateExpense(expense);
-//        }
-
+        Date day = new Date(date.getTime());
+        String note = this.txtNote.getText().toString();
+        String category = this.textCategory;
+        if(mode==MODE_CREATE ) {
+            try{
+                Random rn = new Random();
+                int id = rn.nextInt(16000);
+                if(money ==0){
+                    Toast.makeText(getBaseContext(),
+                            "Please enter value", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                this.expense= new Expense(id,category,note,money,day);
+                db.addExpense(expense);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        } else  {
+            this.expense.setMoney(money);
+            this.expense.setCategory(category);
+            this.expense.setNotes(note);
+            this.expense.setDate(day);
+            db.updateExpense(expense);
+        }
         this.needRefresh = true;
         // Trở lại MainActivity.
         this.onBackPressed();
@@ -193,7 +203,8 @@ public class AddEditExpenseActivity extends AppCompatActivity implements Adapter
         Intent data = new Intent();
         // Yêu cầu MainActivity refresh lại ListView hoặc không.
         data.putExtra("needRefresh", needRefresh);
-
+        Gson gson = new Gson();
+        data.putExtra("expenseReturn", gson.toJson(expense));
         // Activity đã hoàn thành OK, trả về dữ liệu.
         this.setResult(Activity.RESULT_OK, data);
         super.finish();

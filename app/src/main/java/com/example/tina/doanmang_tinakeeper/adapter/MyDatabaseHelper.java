@@ -203,17 +203,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
 
         try{
             SQLiteDatabase db = this.getWritableDatabase();
-
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_EXPENSE_ID,Expense.getId());
-            values.put(COLUMN_EXPENSE_CATEGORY, Expense.getCategory());
-            values.put(COLUMN_EXPENSE_NOTES, Expense.getNotes());
-            values.put(COLUMN_EXPENSE_MONEY, Expense.getMoney());
-            values.put(COLUMN_EXPENSE_DATE, String.valueOf(Expense.getDate()));
-
-            // updating row
-            return db.update(TABLE_EXPENSE, values, COLUMN_EXPENSE_ID + " = ?",
-                    new String[]{String.valueOf(Expense.getId())});
+            String updateQuery = "UPDATE " + TABLE_EXPENSE + " SET " + COLUMN_EXPENSE_CATEGORY +
+                    "= '" + Expense.getCategory() + "'," + COLUMN_EXPENSE_NOTES +
+                    "= '" + Expense.getNotes() + "'," + COLUMN_EXPENSE_MONEY +
+                    "= " + Expense.getMoney() + "," + COLUMN_EXPENSE_DATE +
+                    "= '" + Expense.getDateString() + "' WHERE " + COLUMN_EXPENSE_ID + " = "
+                    + Expense.getId();
+            Log.i(TAG, updateQuery);
+            db.execSQL(updateQuery);
         } catch (Exception e){
             e.printStackTrace();
         }

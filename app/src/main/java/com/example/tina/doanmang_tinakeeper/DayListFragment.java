@@ -99,24 +99,10 @@ public class DayListFragment extends Fragment {
         //Set ngày giờ hiện tại khi mới chạy lần đầu
         cal=Calendar.getInstance();
         date = cal.getTime();
-        SimpleDateFormat dft=null;
-        dft=new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat dft = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String strDate=dft.format(cal.getTime());
 //        hiển thị lên giao diện
         btnGetDate.setText(strDate);
-    }
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view,
-                                    ContextMenu.ContextMenuInfo menuInfo)    {
-
-        super.onCreateContextMenu(menu, view, menuInfo);
-        menu.setHeaderTitle("Select The Action");
-
-        // groupId, itemId, order, title
-        menu.add(0, MENU_ITEM_VIEW , 0, "View Expense");
-        menu.add(0, MENU_ITEM_CREATE , 1, "Create Expense");
-        menu.add(0, MENU_ITEM_EDIT , 2, "Edit Expense");
-        menu.add(0, MENU_ITEM_DELETE, 4, "Delete Expense");
     }
 
     View.OnClickListener showDatePicker = new View.OnClickListener() {
@@ -159,47 +145,6 @@ public class DayListFragment extends Fragment {
         this.adapter.notifyDataSetChanged();
     }
 
-//    @Override
-//    public boolean onContextItemSelected(MenuItem item){
-//        AdapterView.AdapterContextMenuInfo
-//                info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-//
-//        final Expense selectedExpense = (Expense) this.adapter.getItem(info.position);
-//
-//        if(item.getItemId() == MENU_ITEM_VIEW){
-//            //Toast.makeText(getContext(),selectedExpense.(), Toast.LENGTH_LONG).show();
-//        }
-//        else if(item.getItemId() == MENU_ITEM_CREATE){
-//            Intent intent = new Intent(getContext(), AddEditExpenseActivity.class);
-//
-//            // Start AddEditExpenseActivity, có phản hồi.
-//            this.startActivityForResult(intent, MY_REQUEST_CODE);
-//        }
-//        else if(item.getItemId() == MENU_ITEM_EDIT ){
-//            Intent intent = new Intent(getContext(), AddEditExpenseActivity.class);
-//            intent.putExtra("expense", selectedExpense.toString());
-//
-//            // Start AddEditExpenseActivity, có phản hồi.
-//            this.startActivityForResult(intent,MY_REQUEST_CODE);
-//        }
-//        else if(item.getItemId() == MENU_ITEM_DELETE){
-//            // Hỏi trước khi xóa.
-//            new AlertDialog.Builder(getContext())
-//                    .setMessage(selectedExpense.getMoney()+". Are you sure you want to delete?")
-//                    .setCancelable(false)
-//                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            deleteExpense(selectedExpense);
-//                        }
-//                    })
-//                    .setNegativeButton("No", null)
-//                    .show();
-//        }
-//        else {
-//            return false;
-//        }
-//        return true;
-//    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == MY_REQUEST_CODE ) {
@@ -223,7 +168,6 @@ public class DayListFragment extends Fragment {
     public void calculateMoney(List<Expense> list){
         long income=0;
         long expense=0;
-        long total=0;
         for(int i=0;i<list.size();i++){
             String category = list.get(i).getCategory();
             long money = list.get(i).getMoney();
@@ -233,7 +177,7 @@ public class DayListFragment extends Fragment {
                 expense+=money;
             }
         }
-        total = income - expense;
+        long total = income - expense;
         if(total>=0){
             txtTotal.setText("$"+String.valueOf(total));
         } else {

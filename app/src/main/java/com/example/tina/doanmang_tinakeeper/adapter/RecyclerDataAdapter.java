@@ -1,6 +1,7 @@
 package com.example.tina.doanmang_tinakeeper.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tina.doanmang_tinakeeper.ExpenseDetailActivity;
 import com.example.tina.doanmang_tinakeeper.R;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -82,8 +85,10 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<RecyclerDataAdapte
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Toast.makeText(context,"clicked"+pos, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(context, ExpenseDetailActivity.class);
+                Gson gson = new Gson();
+                intent.putExtra("expense", gson.toJson(expense.get(pos)));
+                context.startActivity(intent);
             }
         });
     }

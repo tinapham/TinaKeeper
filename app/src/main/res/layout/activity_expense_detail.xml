@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.tina.doanmang_tinakeeper.AddEditExpenseActivity"
+    tools:context=".ExpenseDetailActivity"
     android:weightSum="1">
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,11 +20,12 @@
                 android:src="@drawable/notes"
                 android:layout_marginStart="16dp"
                 android:layout_gravity="center"/>
-            <EditText
-                android:id="@+id/txt_money"
+            <TextView
+                android:id="@+id/textMoney"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
+                android:text="$200"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:gravity="center"/>
@@ -41,14 +42,15 @@
                 android:src="@drawable/check"
                 android:layout_marginStart="16dp"
                 android:layout_gravity="center"/>
-            <Spinner
-                android:id="@+id/spinner"
+            <TextView
+                android:id="@+id/textCategory"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:layout_marginStart="16dp"
-                tools:listitem="@layout/support_simple_spinner_dropdown_item"
-                android:textAlignment="center"/>
+                android:textSize="18sp"
+                android:textColor="#ff000000"
+                android:text="Food"
+                android:gravity="center" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,18 +58,18 @@
             android:orientation="horizontal"
             android:layout_marginTop="16dp"
             android:background="#ffff">
-            <ImageButton
-                android:id="@+id/btn_date"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/calendar"
                 android:layout_marginStart="16dp"
                 android:layout_gravity="center"/>
-            <EditText
-                android:id="@+id/txt_date"
+            <TextView
+                android:id="@+id/textCalendar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
+                android:text="17/02/2017"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:gravity="center"/>
@@ -87,13 +89,14 @@
                 android:layout_marginStart="16dp"
                 android:src="@drawable/notepad" />
 
-            <EditText
-                android:id="@+id/txt_note"
+            <TextView
+                android:id="@+id/textNotes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
                 android:textSize="18sp"
                 android:textColor="#ff000000"
+                android:text="Zé Food"
                 android:gravity="center" />
         </LinearLayout>
 
@@ -107,24 +110,36 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button_save"
+            android:id="@+id/button_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button"
-            android:onClick="buttonSaveClicked"
-            android:text="Save"
+            android:onClick="buttonEditClicked"
+            android:text="Edit"
             android:textColor="#ffff"
             android:layout_gravity="center"/>
+
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:text="Delete"
+            android:layout_marginStart="32dp"
+            android:textColor="#ffff"
+            android:layout_gravity="center"
+            android:onClick="buttonDeleteClicked"/>
 
         <Button
             android:id="@+id/button_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button"
+            android:onClick="buttonCancelClicked"
             android:text="Cancel"
-            android:layout_marginStart="64dp"
+            android:layout_marginStart="32dp"
             android:textColor="#ffff"
-            android:layout_gravity="center"
-            android:onClick="buttonCancelClicked"/>
+            android:layout_gravity="center"/>
     </LinearLayout>
 </FrameLayout>
