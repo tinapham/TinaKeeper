@@ -43,7 +43,7 @@ public class DayList extends Fragment {
     private static final int MENU_ITEM_CREATE = 333;
     private static final int MENU_ITEM_DELETE = 444;
     private static final int MY_REQUEST_CODE = 1000;
-    private Button btnGetDate;
+    private TextView btnGetDate;
     private TextView txtTotal;
     private View view;
     private RecyclerView recyclerview;
@@ -63,10 +63,8 @@ public class DayList extends Fragment {
         try{
             this.expenseList.clear();
             MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
-            db.createDefaultExpenseIfNeed();//tạo 2 bản ghi mặc định
             Log.i(TAG,new Date(date.getTime()).toString());
-            List<Expense> list=  sortByDay(db.getAllExpense(),new Date(date.getTime()));
-//            List<Expense> list=  db.getAllExpense();
+            List<Expense> list=  db.getExpenseByDate(new Date(date.getTime()));
             calculateMoney(list);
             this.expenseList.addAll(list);
         } catch (Exception e){
@@ -94,7 +92,7 @@ public class DayList extends Fragment {
         return view;
     }
     public void getFormWidgets(){
-        btnGetDate= (Button) view.findViewById(R.id.button_getdate);
+        btnGetDate= (TextView) view.findViewById(R.id.button_getdate);
         recyclerview = (RecyclerView) view.findViewById(R.id.rv_list_day);
         txtTotal = (TextView) view.findViewById(R.id.txt_total);
     }
@@ -215,32 +213,21 @@ public class DayList extends Fragment {
         }
     }
 
-    public static List<Expense> sortByDay(List<Expense> list, Date requires){
-        List<Expense> result = new ArrayList<Expense>();
-        for(int i=0;i<list.size();i++){
-//            Log.i(TAG,list.get(i).getDateString());
-            if(list.get(i).getDateString().equals(requires.toString())) {
-                result.add(list.get(i));
-            }
-        }
-        return result;
-    }
-
     public void reloadList(Date date){
         expenseList.clear();
         MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
-        List<Expense> list=  sortByDay(db.getAllExpense(),date);
+        List<Expense> list=  db.getExpenseByDate(date);
         calculateMoney(list);
         expenseList.addAll(list);
     }
 
     public void calculateMoney(List<Expense> list){
-        double income=0;
-        double expense=0;
-        double total=0;
+        long income=0;
+        long expense=0;
+        long total=0;
         for(int i=0;i<list.size();i++){
             String category = list.get(i).getCategory();
-            double money = list.get(i).getMoney();
+            long money = list.get(i).getMoney();
             if(category.equals("Deposits")||category.equals("Salary")||category.equals("Savings")){
                 income+=money;
             } else {
@@ -248,6 +235,11 @@ public class DayList extends Fragment {
             }
         }
         total = income - expense;
-        txtTotal.setText(String.valueOf(total));
+        if(total>=0){
+            txtTotal.setText("$"+String.valueOf(total));
+        } else {
+            txtTotal.setText("-$"+String.valueOf(Math.abs(total)));
+        }
     }
+
 }

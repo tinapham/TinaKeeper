@@ -1,6 +1,7 @@
 package com.example.tina.doanmang_tinakeeper.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -39,17 +40,43 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<RecyclerDataAdapte
 
     @Override
     public RecyclerDataAdapter.DataViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView;
-        itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_row_item, parent, false);
-        return new DataViewHolder(itemView);
+//        View itemView;
+//        itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_row_item, parent, false);
+//        return new DataViewHolder(itemView);
+
+        View view = null;
+        RecyclerDataAdapter.DataViewHolder viewHolder = null;
+        switch (viewType) {
+            case 0:
+                view = View.inflate(parent.getContext(), R.layout.cardview_row_item, null);
+                viewHolder = new DataViewHolder(view);
+                break;
+            case 1:
+                view = View.inflate(parent.getContext(), R.layout.cardview_row_item_expense, null);
+                viewHolder = new DataViewHolder(view);
+                break;
+        }
+        return viewHolder;
+    }
+    @Override
+    public int getItemViewType(int position) {
+        String category = expense.get(position).getCategory();
+        if (category.equals("Deposits")||category.equals("Salary")||category.equals("Savings")){
+            return 0;
+        }
+        return 1;
     }
 
     @Override
     public void onBindViewHolder(RecyclerDataAdapter.DataViewHolder holder, int position) {
+        String category = expense.get(position).getCategory();
         holder.tvCategory.setText(expense.get(position).getCategory());
         holder.tvNote.setText(expense.get(position).getNotes());
-        holder.tvExpense.setText(String.valueOf(expense.get(position).getMoney()));
-
+        if (category.equals("Deposits")||category.equals("Salary")||category.equals("Savings")){
+            holder.tvExpense.setText("+"+String.valueOf(expense.get(position).getMoney()));
+        } else {
+            holder.tvExpense.setText("-"+String.valueOf(expense.get(position).getMoney()));
+        }
         final int pos=position;
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {

@@ -141,11 +141,11 @@ public class AddEditExpense extends AppCompatActivity implements AdapterView.OnI
     public void buttonSaveClicked(View view)  {
         MyDatabaseHelper db = new MyDatabaseHelper(this);
         //đưa dữ liệu để lưu trữ vào database
-        double money;
+        long money;
         if(this.txtMoney.getText().toString().equals("")){
             money =0;
         } else {
-            money = Integer.parseInt(this.txtMoney.getText().toString());
+            money = Long.parseLong(this.txtMoney.getText().toString());
         }
         Date day = new Date(date.getTime());
         String note = this.txtNote.getText().toString();

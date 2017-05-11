@@ -12,7 +12,7 @@ public class Expense {
     private int id;
     private String category;
     private String notes;
-    private double money;
+    private long money;
     private Date date;
     private int photoID;
     public Expense() {
@@ -22,7 +22,7 @@ public class Expense {
         this.date = null;
         this.photoID = 0;
     }
-    public Expense(int id, String category, String notes, double money, Date date) {
+    public Expense(int id, String category, String notes, long money, Date date) {
         this.id = id;
         this.category = category;
         this.notes = notes;
@@ -38,7 +38,7 @@ public class Expense {
         this.id = id;
     }
 
-    public Expense(int id, String category, String notes, double money, Date date, int photoID) {
+    public Expense(int id, String category, String notes, long money, Date date, int photoID) {
         this.id = id;
         this.category = category;
         this.notes = notes;
@@ -75,11 +75,11 @@ public class Expense {
         this.notes = notes;
     }
 
-    public double getMoney() {
+    public long getMoney() {
         return money;
     }
 
-    public void setMoney(double money) {
+    public void setMoney(long money) {
         this.money = money;
     }
 
