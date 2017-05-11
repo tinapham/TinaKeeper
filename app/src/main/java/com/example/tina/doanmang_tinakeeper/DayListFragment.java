@@ -4,7 +4,6 @@ package com.example.tina.doanmang_tinakeeper;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +14,6 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -23,7 +21,6 @@ import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
 import com.example.tina.doanmang_tinakeeper.adapter.RecyclerDataAdapter;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
 import com.github.clans.fab.FloatingActionButton;
-import com.google.gson.Gson;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -37,7 +34,7 @@ import java.util.Locale;
  * Created by TiNa on 06/03/2017.
  */
 
-public class DayList extends Fragment {
+public class DayListFragment extends Fragment {
     private static final String TAG = "DAYLIST";
     private static final int MENU_ITEM_VIEW = 111;
     private static final int MENU_ITEM_EDIT = 222;
@@ -78,7 +75,7 @@ public class DayList extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddEditExpense.class);
+                Intent intent = new Intent(getActivity(), AddEditExpenseActivity.class);
                 startActivityForResult(intent,MY_REQUEST_CODE);
             }
         });
@@ -173,13 +170,13 @@ public class DayList extends Fragment {
 //            //Toast.makeText(getContext(),selectedExpense.(), Toast.LENGTH_LONG).show();
 //        }
 //        else if(item.getItemId() == MENU_ITEM_CREATE){
-//            Intent intent = new Intent(getContext(), AddEditExpense.class);
+//            Intent intent = new Intent(getContext(), AddEditExpenseActivity.class);
 //
 //            // Start AddEditExpenseActivity, có phản hồi.
 //            this.startActivityForResult(intent, MY_REQUEST_CODE);
 //        }
 //        else if(item.getItemId() == MENU_ITEM_EDIT ){
-//            Intent intent = new Intent(getContext(), AddEditExpense.class);
+//            Intent intent = new Intent(getContext(), AddEditExpenseActivity.class);
 //            intent.putExtra("expense", selectedExpense.toString());
 //
 //            // Start AddEditExpenseActivity, có phản hồi.

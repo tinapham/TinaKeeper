@@ -1,6 +1,4 @@
 package com.example.tina.doanmang_tinakeeper.model;
-
-
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
@@ -14,13 +12,11 @@ public class Expense {
     private String notes;
     private long money;
     private Date date;
-    private int photoID;
     public Expense() {
         this.category = null;
         this.notes = null;
         this.money = 0;
         this.date = null;
-        this.photoID = 0;
     }
     public Expense(int id, String category, String notes, long money, Date date) {
         this.id = id;
@@ -44,7 +40,6 @@ public class Expense {
         this.notes = notes;
         this.money = money;
         this.date = date;
-        this.photoID =photoID;
 
     }
     public Date getDate() {
@@ -82,15 +77,6 @@ public class Expense {
     public void setMoney(long money) {
         this.money = money;
     }
-
-    public int getPhotoID() {
-        return photoID;
-    }
-
-    public void setPhotoID(int photoID) {
-        this.photoID = photoID;
-    }
-
     public String toString(){
         return this.category + ";" + this.notes +" "+ this.money+" "+this.getDateString();
     }

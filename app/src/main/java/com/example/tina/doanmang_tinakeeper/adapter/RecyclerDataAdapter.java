@@ -73,9 +73,9 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<RecyclerDataAdapte
         holder.tvCategory.setText(expense.get(position).getCategory());
         holder.tvNote.setText(expense.get(position).getNotes());
         if (category.equals("Deposits")||category.equals("Salary")||category.equals("Savings")){
-            holder.tvExpense.setText("+"+String.valueOf(expense.get(position).getMoney()));
+            holder.tvExpense.setText("+$"+String.valueOf(expense.get(position).getMoney()));
         } else {
-            holder.tvExpense.setText("-"+String.valueOf(expense.get(position).getMoney()));
+            holder.tvExpense.setText("-$"+String.valueOf(expense.get(position).getMoney()));
         }
         final int pos=position;
 

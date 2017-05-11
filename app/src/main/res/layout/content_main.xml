@@ -17,7 +17,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.tina.doanmang_tinakeeper.MonthList"
+        android:name="com.example.tina.doanmang_tinakeeper.MonthListFragment"
         android:id="@+id/month_frg"/>
 
 </RelativeLayout>

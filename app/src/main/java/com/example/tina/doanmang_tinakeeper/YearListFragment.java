@@ -11,7 +11,7 @@ import android.view.ViewGroup;
  * Created by TiNa on 06/03/2017.
  */
 
-public class YearList extends Fragment {
+public class YearListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

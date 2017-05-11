@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e6e6e6"
     android:orientation="vertical"
-    android:padding="30dp">
+    android:padding="32dp">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,10 +12,11 @@
         android:text="Gửi báo cáo"
         android:textSize="25sp"
         android:textColor="#33691E"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="32dp"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,36 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"/>
-
     </LinearLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
-
-    <CheckBox
-        android:id="@+id/btn_choose_day"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ngày"
-        android:layout_marginStart="36dp"/>
-
-    <CheckBox
-        android:id="@+id/btn_choose_month"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tháng"
-        android:layout_marginStart="36dp"/>
-
-    <CheckBox
-        android:id="@+id/btn_choose_year"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Năm"
-        android:layout_marginStart="36dp"/>
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,4 +35,4 @@
         android:layout_gravity="center"
         android:background="@drawable/button"
         android:textColor="#ffff" />
-</LinearLayout>
+</GridLayout>

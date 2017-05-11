@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class AddEditExpense extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class AddEditExpenseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "AddExpense";
     private Calendar cal;
     private java.util.Date date;
@@ -125,7 +124,7 @@ public class AddEditExpense extends AppCompatActivity implements AdapterView.OnI
             int nam = Integer.parseInt(strArrtmp[2]);
             //Hiển thị ra Dialog
             DatePickerDialog pic = new DatePickerDialog(
-                    AddEditExpense.this,
+                    AddEditExpenseActivity.this,
                     callback, nam, thang, ngay);
             pic.show();
         }

@@ -10,10 +10,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
 import com.example.tina.doanmang_tinakeeper.adapter.Permission;
+import com.example.tina.doanmang_tinakeeper.model.Expense;
+import com.example.tina.doanmang_tinakeeper.model.GsonFileTxt;
+import com.example.tina.doanmang_tinakeeper.model.ReceiveMail;
+import com.example.tina.doanmang_tinakeeper.model.SendMail;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,27 +36,6 @@ public class MainActivity extends AppCompatActivity
         initFragment();
 
         Permission.verifyStoragePermissions(this);
-
-//        List<Expense> dayList = new ArrayList<>();
-//        dayList.add(new Expense("Ăn uống","05/03/2017","",-20000));
-//        dayList.add(new Expense("Vận chuyển","05/03/2017","",-50000));
-//
-//        rvItems = (RecyclerView) findViewById(R.id.rv_list_day);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        rvItems.setLayoutManager(layoutManager);
-//        rvItems.setHasFixedSize(true);
-//        rvItems.setAdapter(new RecyclerDataAdapter(this, dayList));
-
-        //Xử lý nút (+)
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, AddEditExpense.class);
-//
-//                startActivity(intent);
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -84,6 +73,17 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+//            //Creating SendMail object
+//            ReceiveMail rm = new ReceiveMail(this);
+//            rm.execute();
+//            //read Gson to list Expense
+//            GsonFileTxt gsonFileTxt = new GsonFileTxt(this,"database.txt");
+//            List<Expense> list = gsonFileTxt.readGson();
+//            //Write to database
+//            MyDatabaseHelper db = new MyDatabaseHelper(this);
+//            for(int i=0;i<list.size();i++){
+//                db.addExpense(list.get(i));
+//                Log.i("Main Activity",list.get(i).getCategory());
             return true;
         }
 
@@ -97,13 +97,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_day) {
-            replaceFragmentContent(new DayList());
+            replaceFragmentContent(new DayListFragment());
         } else if (id == R.id.nav_month) {
-            replaceFragmentContent(new MonthList());
+            replaceFragmentContent(new MonthListFragment());
         } else if (id == R.id.nav_year) {
-            replaceFragmentContent(new YearList());
+            replaceFragmentContent(new YearListFragment());
         } else if (id == R.id.nav_send) {
-            replaceFragmentContent(new SendMail());
+            replaceFragmentContent(new SendMailFragment());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,9 +111,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    //đặt fragment DayList làm mặc định
+    //đặt fragment DayListFragment làm mặc định
     private void initFragment() {
-        DayList firstFragment = new DayList();
+        DayListFragment firstFragment = new DayListFragment();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -131,6 +131,11 @@ public class MainActivity extends AppCompatActivity
             ft.commit();
         }
 
+    }
+
+    // Khi người dùng Click vào button Cancel.
+    public void buttonDataSyncClicked(View view)  {
+        Toast.makeText(this, "test", Toast.LENGTH_LONG).show();
     }
 
 }
