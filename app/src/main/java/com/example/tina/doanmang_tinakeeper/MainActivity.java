@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.tina.doanmang_tinakeeper.adapter.Permission;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     @Override
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initFragment();
+
+        Permission.verifyStoragePermissions(this);
 
 //        List<Expense> dayList = new ArrayList<>();
 //        dayList.add(new Expense("Ăn uống","05/03/2017","",-20000));

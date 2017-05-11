@@ -23,6 +23,7 @@ import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
 import com.example.tina.doanmang_tinakeeper.adapter.RecyclerDataAdapter;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.gson.Gson;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -66,6 +67,7 @@ public class DayList extends Fragment {
             Log.i(TAG,new Date(date.getTime()).toString());
             List<Expense> list=  db.getExpenseByDate(new Date(date.getTime()));
             calculateMoney(list);
+
             this.expenseList.addAll(list);
         } catch (Exception e){
             e.printStackTrace();

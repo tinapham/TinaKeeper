@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,8 +16,27 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
+import com.example.tina.doanmang_tinakeeper.model.Expense;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class SendMail extends Fragment {
@@ -24,6 +44,7 @@ public class SendMail extends Fragment {
     private EditText txtGetDate;
     private Button startBtn;
     private Calendar cal;
+    List<Expense> expenseList = new ArrayList<Expense>();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,6 +55,11 @@ public class SendMail extends Fragment {
                 sendEmail();
             }
         });
+
+
+
+
+
         txtGetDate = (EditText) view.findViewById(R.id.txt_get_date);
         //        cau hinh cho button lay ngay thang nam
         //Set ngày giờ hiện tại khi mới chạy lần đầu
@@ -73,24 +99,66 @@ public class SendMail extends Fragment {
         }
     };
     protected void sendEmail() {
-        Log.i("Send email", "");
-        String[] TO = {""};
-        String[] CC = {""};
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        readGson();
 
-        emailIntent.setData(Uri.parse("mailto:"));
-        emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-        emailIntent.putExtra(Intent.EXTRA_CC, CC);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, txtGetDate.getText());
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
 
+//        Log.i("Send email", "");
+//        String[] TO = {""};
+//        String[] CC = {""};
+//        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+//
+//        emailIntent.setData(Uri.parse("mailto:"));
+//        emailIntent.setType("text/plain");
+//        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+//        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+//        emailIntent.putExtra(Intent.EXTRA_SUBJECT, txtGetDate.getText());
+//        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+//
+//        try {
+//            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+//            Log.i("Finished sending email","");
+//        }
+//        catch (android.content.ActivityNotFoundException ex) {
+//            Toast.makeText(getContext(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
+//        }
+    }
+    
+    public void writeGson(){
+        MyDatabaseHelper db = new MyDatabaseHelper(getActivity());
+        List<Expense> list = db.getAllExpense();
+        Gson gson = new Gson();
+        String string = gson.toJson(list);
         try {
-            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-            Log.i("Finished sending email","");
+            File myFile = new File(Environment.getExternalStorageDirectory() + "/database.txt");
+            myFile.createNewFile();
+            FileOutputStream fOut = new FileOutputStream(myFile);
+            OutputStreamWriter myOutWriter =new OutputStreamWriter(fOut);
+            myOutWriter.append(string);
+            myOutWriter.close();
+            fOut.close();
+        } catch (Exception e) {
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getContext(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
+    }
+    public void readGson(){
+        try {
+            File myFile = new File(Environment.getExternalStorageDirectory() + "/database.txt");
+            FileInputStream fIn = new FileInputStream(myFile);
+            BufferedReader myReader = new BufferedReader(new InputStreamReader(fIn));
+            String aDataRow = "";
+            String aBuffer = ""; //Holds the text
+            while ((aDataRow = myReader.readLine()) != null)
+            {
+                aBuffer += aDataRow ;
+            }
+            Gson gson = new Gson();
+            expenseList = Arrays.asList(gson.fromJson(aBuffer, Expense[].class));
+            Toast.makeText(getContext(), expenseList.get(5).getCategory(), Toast.LENGTH_LONG).show();
         }
+        catch (Exception e) {
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
     }
 }
