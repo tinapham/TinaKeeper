@@ -73,20 +73,20 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-//            //Creating SendMail object
-//            ReceiveMail rm = new ReceiveMail(this);
-//            rm.execute();
-//            //read Gson to list Expense
-//            GsonFileTxt gsonFileTxt = new GsonFileTxt(this,"database.txt");
-//            List<Expense> list = gsonFileTxt.readGson();
-//            //Write to database
-//            MyDatabaseHelper db = new MyDatabaseHelper(this);
-//            for(int i=0;i<list.size();i++){
-//                db.addExpense(list.get(i));
-//                Log.i("Main Activity",list.get(i).getCategory());
+            //Creating SendMail object
+            ReceiveMail rm = new ReceiveMail(this);
+            rm.execute();
+            //read Gson to list Expense
+            GsonFileTxt gsonFileTxt = new GsonFileTxt(this,"database.txt");
+            List<Expense> list = gsonFileTxt.readGson();
+            //Write to database
+            MyDatabaseHelper db = new MyDatabaseHelper(this);
+            for(int i=0;i<list.size();i++) {
+                db.addExpense(list.get(i));
+                Log.i("Main Activity", list.get(i).getCategory());
+            }
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

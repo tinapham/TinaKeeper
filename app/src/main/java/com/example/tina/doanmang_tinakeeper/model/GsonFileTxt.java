@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,8 +34,8 @@ public class GsonFileTxt {
 
     public void writeGson(){
         MyDatabaseHelper db = new MyDatabaseHelper(context);
-        List<Expense> list = db.getExpenseByDate(Date.valueOf("2017-05-11"));
-        Gson gson = new Gson();
+        List<Expense> list = db.getAllExpense();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         String string = gson.toJson(list);
         try {
             File myFile = new File(Environment.getExternalStorageDirectory() + "/database.txt");
@@ -60,7 +61,7 @@ public class GsonFileTxt {
             {
                 aBuffer += aDataRow ;
             }
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
             expenseList = Arrays.asList(gson.fromJson(aBuffer, Expense[].class));
         }
         catch (Exception e) {

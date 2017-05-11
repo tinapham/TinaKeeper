@@ -48,13 +48,17 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
         this.email = email;
         this.subject = subject;
         this.text = text;
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Sending data");
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        progressDialog.show();
         //Showing progress dialog while sending email
-        progressDialog = ProgressDialog.show(context,"Sending message","Please wait...",false,false);
+
     }
 
     @Override

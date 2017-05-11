@@ -34,14 +34,6 @@ public class Expense {
         this.id = id;
     }
 
-    public Expense(int id, String category, String notes, long money, Date date, int photoID) {
-        this.id = id;
-        this.category = category;
-        this.notes = notes;
-        this.money = money;
-        this.date = date;
-
-    }
     public Date getDate() {
         return date;
     }

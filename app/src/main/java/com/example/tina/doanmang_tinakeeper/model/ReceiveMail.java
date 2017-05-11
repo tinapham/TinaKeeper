@@ -40,6 +40,9 @@ public class ReceiveMail extends AsyncTask<Void,Void,Void> {
 
     public ReceiveMail(Context context) {
         this.context = context;
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Receiving data");
     }
 
     //Progressdialog to show while sending email
@@ -49,7 +52,7 @@ public class ReceiveMail extends AsyncTask<Void,Void,Void> {
     protected void onPreExecute() {
         super.onPreExecute();
         //Showing progress dialog while sending email
-        progressDialog = ProgressDialog.show(context,"Receiving message","Please wait...",false,false);
+        progressDialog.show();
     }
 
     @Override

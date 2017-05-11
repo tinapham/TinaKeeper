@@ -126,7 +126,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
 
         List<Expense> list = new ArrayList<Expense>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_EXPENSE;
+        String selectQuery = "SELECT  * FROM " + TABLE_EXPENSE+" WHERE 1";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
