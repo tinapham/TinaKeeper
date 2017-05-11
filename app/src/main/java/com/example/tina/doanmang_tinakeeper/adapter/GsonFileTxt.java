@@ -1,10 +1,11 @@
-package com.example.tina.doanmang_tinakeeper.model;
+package com.example.tina.doanmang_tinakeeper.adapter;
 
 import android.content.Context;
 import android.os.Environment;
 import android.widget.Toast;
 
 import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
+import com.example.tina.doanmang_tinakeeper.model.Expense;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -49,7 +50,7 @@ public class GsonFileTxt {
             e.printStackTrace();
         }
     }
-    public List<Expense> readGson(){
+    protected List<Expense> readGson(){
         List<Expense> expenseList = new ArrayList<Expense>();
         try {
             File myFile = new File(Environment.getExternalStorageDirectory() + "/database.txt");

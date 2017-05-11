@@ -2,7 +2,6 @@ package com.example.tina.doanmang_tinakeeper;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,23 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
-import com.example.tina.doanmang_tinakeeper.model.GsonFileTxt;
-import com.example.tina.doanmang_tinakeeper.model.SendMail;
+import com.example.tina.doanmang_tinakeeper.adapter.GsonFileTxt;
+import com.example.tina.doanmang_tinakeeper.adapter.SendMail;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
-import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;

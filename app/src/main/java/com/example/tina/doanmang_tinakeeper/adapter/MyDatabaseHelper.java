@@ -66,158 +66,169 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
     //đếm số bản ghi
     public int getExpenseCount() {
         Log.i(TAG, "MyDatabaseHelper.getNotesCount ... " );
+        try{
+            String countQuery = "SELECT  * FROM " + TABLE_EXPENSE;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
 
-        String countQuery = "SELECT  * FROM " + TABLE_EXPENSE;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
+            int count = cursor.getCount();
 
-        int count = cursor.getCount();
+            cursor.close();
 
-        cursor.close();
-
-        // return count
-        return count;
+            // return count
+            return count;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     //thêm bản ghi
     public void addExpense(Expense expense) {
         Log.i(TAG, "MyDatabaseHelper.addNote ... " + expense.getDateString());
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            String sql = "INSERT INTO EXPENSE VALUES (" + expense.getId() + ",'" + expense.getCategory() + "','"
+                    + expense.getNotes() + "'," + expense.getMoney() + ",'" + expense.getDateString() + "')";
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "INSERT INTO EXPENSE VALUES (" + expense.getId()+",'"+expense.getCategory()+"','"
-                + expense.getNotes()+"',"+expense.getMoney()+",'"+expense.getDateString()+"')";
-
-        db.execSQL(sql);
-        // Đóng kết nối database.
-        db.close();
-
-//        void addContact(Expense expense) {
-//            SQLiteDatabase db = this.getWritableDatabase();
-//
-//            ContentValues values = new ContentValues();
-//            values.put(KEY_CATEGORY, expense.getCategory()); // Expense Name
-//            values.put(KEY_NOTES, expense.getNotes()); // Expense Phone
-//
-//            // Inserting Row
-//            db.insert(TABLE_EXPENSE, null, values);
-//            db.close(); // Closing database connection
-//        }
+            db.execSQL(sql);
+            // Đóng kết nối database.
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public Expense getExpense(int id) {
         Log.i(TAG, "MyDatabaseHelper.getNote ... " + id);
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_EXPENSE, new String[] { COLUMN_EXPENSE_ID,
-                        COLUMN_EXPENSE_CATEGORY, COLUMN_EXPENSE_NOTES,COLUMN_EXPENSE_MONEY,
-                        COLUMN_EXPENSE_DATE }, COLUMN_EXPENSE_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-        Expense expense = new Expense(Integer.parseInt(cursor.getString(0)),cursor.getString(1),
-                    cursor.getString(2), Integer.parseInt(cursor.getString(3)), Date.valueOf(cursor.getString(4)));
-        cursor.close();
-        db.close();
+        Expense expense = new Expense();
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.query(TABLE_EXPENSE, new String[] { COLUMN_EXPENSE_ID,
+                            COLUMN_EXPENSE_CATEGORY, COLUMN_EXPENSE_NOTES,COLUMN_EXPENSE_MONEY,
+                            COLUMN_EXPENSE_DATE }, COLUMN_EXPENSE_ID + "=?",
+                    new String[] { String.valueOf(id) }, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            expense.setId(Integer.parseInt(cursor.getString(0)));
+            expense.setCategory(cursor.getString(1));
+            expense.setNotes(cursor.getString(2));
+            expense.setMoney(Integer.parseInt(cursor.getString(3)));
+            expense.setDate(Date.valueOf(cursor.getString(4)));
+            cursor.close();
+            db.close();
+            return expense;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         return expense;
     }
 
     public List<Expense> getAllExpense() {
         Log.i(TAG, "MyDatabaseHelper.getAllNotes ... " );
-
         List<Expense> list = new ArrayList<Expense>();
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_EXPENSE+" WHERE 1";
+        try{
+            // Select All Query
+            String selectQuery = "SELECT  * FROM " + TABLE_EXPENSE+" WHERE 1";
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
 
 
-        // Duyệt trên con trỏ, và thêm vào danh sách.
-        if (cursor.moveToFirst()) {
-            do {
-                Expense expense = new Expense();
-                expense.setId(Integer.parseInt(cursor.getString(0)));
-                expense.setCategory(cursor.getString(1));
-                expense.setNotes(cursor.getString(2));
-                expense.setMoney(cursor.getLong(3));
+            // Duyệt trên con trỏ, và thêm vào danh sách.
+            if (cursor.moveToFirst()) {
+                do {
+                    Expense expense = new Expense();
+                    expense.setId(Integer.parseInt(cursor.getString(0)));
+                    expense.setCategory(cursor.getString(1));
+                    expense.setNotes(cursor.getString(2));
+                    expense.setMoney(cursor.getLong(3));
 //                Date date = cursor.getString(4);
-                Log.i(TAG,cursor.getString(4));
-                expense.setDate(Date.valueOf(cursor.getString(4)));
-                Log.i(TAG,expense.toString());
-                // Thêm vào danh sách.
-                list.add(expense);
-            } while (cursor.moveToNext());
+                    Log.i(TAG,cursor.getString(4));
+                    expense.setDate(Date.valueOf(cursor.getString(4)));
+                    Log.i(TAG,expense.toString());
+                    // Thêm vào danh sách.
+                    list.add(expense);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            // return note list
+            return list;
+        } catch (Exception e){
+            e.printStackTrace();
         }
-        cursor.close();
-        db.close();
-        // return note list
         return list;
     }
     public List<Expense> getExpenseByDate(Date date) {
         Log.i(TAG, "MyDatabaseHelper.getNotesByDay ... " );
 
         List<Expense> list = new ArrayList<Expense>();
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_EXPENSE +" WHERE "+COLUMN_EXPENSE_DATE+" = '"
-                + date.toString()+"'";
+        try{
+            // Select All Query
+            String selectQuery = "SELECT  * FROM " + TABLE_EXPENSE +" WHERE "+COLUMN_EXPENSE_DATE+" = '"
+                    + date.toString()+"'";
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
 
 
-        // Duyệt trên con trỏ, và thêm vào danh sách.
-        if (cursor.moveToFirst()) {
-            do {
-                Expense expense = new Expense();
-                expense.setId(Integer.parseInt(cursor.getString(0)));
-                expense.setCategory(cursor.getString(1));
-                expense.setNotes(cursor.getString(2));
-                expense.setMoney(cursor.getLong(3));
+            // Duyệt trên con trỏ, và thêm vào danh sách.
+            if (cursor.moveToFirst()) {
+                do {
+                    Expense expense = new Expense();
+                    expense.setId(Integer.parseInt(cursor.getString(0)));
+                    expense.setCategory(cursor.getString(1));
+                    expense.setNotes(cursor.getString(2));
+                    expense.setMoney(cursor.getLong(3));
 //                Date date = cursor.getString(4);
-                Log.i(TAG,cursor.getString(4));
-                expense.setDate(Date.valueOf(cursor.getString(4)));
-                Log.i(TAG,expense.toString());
-                // Thêm vào danh sách.
-                list.add(expense);
-            } while (cursor.moveToNext());
+                    Log.i(TAG,cursor.getString(4));
+                    expense.setDate(Date.valueOf(cursor.getString(4)));
+                    Log.i(TAG,expense.toString());
+                    // Thêm vào danh sách.
+                    list.add(expense);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            // return note list
+            return list;
+        } catch (Exception e){
+            e.printStackTrace();
         }
-        cursor.close();
-        db.close();
-        // return note list
         return list;
     }
     public int updateExpense(Expense Expense){
         Log.i(TAG, "MyDatabaseHelper.updateExpense ... "  + Expense.getCategory());
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        try{
+            SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_EXPENSE_ID,Expense.getId());
-        values.put(COLUMN_EXPENSE_CATEGORY, Expense.getCategory());
-        values.put(COLUMN_EXPENSE_NOTES, Expense.getNotes());
-        values.put(COLUMN_EXPENSE_MONEY, Expense.getMoney());
-        values.put(COLUMN_EXPENSE_DATE, String.valueOf(Expense.getDate()));
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_EXPENSE_ID,Expense.getId());
+            values.put(COLUMN_EXPENSE_CATEGORY, Expense.getCategory());
+            values.put(COLUMN_EXPENSE_NOTES, Expense.getNotes());
+            values.put(COLUMN_EXPENSE_MONEY, Expense.getMoney());
+            values.put(COLUMN_EXPENSE_DATE, String.valueOf(Expense.getDate()));
 
-        // updating row
-        return db.update(TABLE_EXPENSE, values, COLUMN_EXPENSE_ID + " = ?",
-                new String[]{String.valueOf(Expense.getId())});
+            // updating row
+            return db.update(TABLE_EXPENSE, values, COLUMN_EXPENSE_ID + " = ?",
+                    new String[]{String.valueOf(Expense.getId())});
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public void deleteExpense(Expense Expense){
         Log.i(TAG, "MyDatabaseHelper.updateExpense ... " + Expense.getCategory() );
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_EXPENSE, COLUMN_EXPENSE_ID + " = ?",
-                new String[] { String.valueOf(Expense.getId()) });
-        db.close();
-    }
-
-    public void deleteExpense(int id){
-        Log.i(TAG, "MyDatabaseHelper.updateExpense ... " + id );
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_EXPENSE, COLUMN_EXPENSE_ID + " = ?",
-                new String[] { String.valueOf(id) });
-        db.close();
+        try{
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_EXPENSE, COLUMN_EXPENSE_ID + " = ?",
+                    new String[] { String.valueOf(Expense.getId()) });
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

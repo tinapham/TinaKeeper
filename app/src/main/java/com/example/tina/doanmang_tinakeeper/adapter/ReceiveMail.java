@@ -1,4 +1,4 @@
-package com.example.tina.doanmang_tinakeeper.model;
+package com.example.tina.doanmang_tinakeeper.adapter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -28,15 +28,15 @@ import javax.mail.Store;
 
 //Class is extending AsyncTask because this class is going to perform a networking operation
 public class ReceiveMail extends AsyncTask<Void,Void,Void> {
-    Context context;
-    StringBuilder sb;
-    Store store;
-    Message[] msgs;
-    Multipart m;
-    BodyPart bp;
-    String disposition, fileName;
-    InputStream base64dec;
-    String errorMsg;
+    private Context context;
+    private StringBuilder sb;
+    private Store store;
+    private Message[] msgs;
+    private Multipart m;
+    private BodyPart bp;
+    private String disposition, fileName;
+    private InputStream base64dec;
+    private String errorMsg;
 
     public ReceiveMail(Context context) {
         this.context = context;

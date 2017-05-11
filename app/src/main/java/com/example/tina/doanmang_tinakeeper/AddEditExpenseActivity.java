@@ -21,6 +21,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Random;
 
 public class AddEditExpenseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "AddExpense";
@@ -138,28 +139,34 @@ public class AddEditExpenseActivity extends AppCompatActivity implements Adapter
 
     // Người dùng Click vào nút Save.
     public void buttonSaveClicked(View view)  {
-        MyDatabaseHelper db = new MyDatabaseHelper(this);
-        //đưa dữ liệu để lưu trữ vào database
-        long money;
-        if(this.txtMoney.getText().toString().equals("")){
-            money =0;
-        } else {
-            money = Long.parseLong(this.txtMoney.getText().toString());
-        }
-        Date day = new Date(date.getTime());
-        String note = this.txtNote.getText().toString();
-        String category = this.textCategory;
-        int id = db.getExpenseCount()+1;
+        try{
+            MyDatabaseHelper db = new MyDatabaseHelper(this);
+            //đưa dữ liệu để lưu trữ vào database
+            long money;
+            if(this.txtMoney.getText().toString().equals("")){
+                money =0;
+            } else {
+                money = Long.parseLong(this.txtMoney.getText().toString());
+            }
+            Date day = new Date(date.getTime());
+            String note = this.txtNote.getText().toString();
+            String category = this.textCategory;
+            Random rn = new Random();
+            int id = rn.nextInt(16000);
 
-        if(money ==0){
-            Toast.makeText(getBaseContext(),
-                    "Please enter value", Toast.LENGTH_LONG).show();
-            return;
-        }
+            if(money ==0){
+                Toast.makeText(getBaseContext(),
+                        "Please enter value", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-        this.expense= new Expense(id,category,note,money,day);
+            this.expense= new Expense(id,category,note,money,day);
 //        this.expense= new Expense(id,category,note,money,day);
-        db.addExpense(expense);
+            db.addExpense(expense);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
 
 
 //        if(mode==MODE_CREATE ) {

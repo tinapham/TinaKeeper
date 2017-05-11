@@ -1,4 +1,4 @@
-package com.example.tina.doanmang_tinakeeper.model;
+package com.example.tina.doanmang_tinakeeper.adapter;
 
 import android.app.ProgressDialog;
 import android.content.Context;

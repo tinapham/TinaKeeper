@@ -16,12 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.tina.doanmang_tinakeeper.adapter.BackupData;
 import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
 import com.example.tina.doanmang_tinakeeper.adapter.Permission;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
-import com.example.tina.doanmang_tinakeeper.model.GsonFileTxt;
-import com.example.tina.doanmang_tinakeeper.model.ReceiveMail;
-import com.example.tina.doanmang_tinakeeper.model.SendMail;
+import com.example.tina.doanmang_tinakeeper.adapter.GsonFileTxt;
+import com.example.tina.doanmang_tinakeeper.adapter.ReceiveMail;
 
 import java.util.List;
 
@@ -76,15 +76,8 @@ public class MainActivity extends AppCompatActivity
             //Creating SendMail object
             ReceiveMail rm = new ReceiveMail(this);
             rm.execute();
-            //read Gson to list Expense
-            GsonFileTxt gsonFileTxt = new GsonFileTxt(this,"database.txt");
-            List<Expense> list = gsonFileTxt.readGson();
-            //Write to database
-            MyDatabaseHelper db = new MyDatabaseHelper(this);
-            for(int i=0;i<list.size();i++) {
-                db.addExpense(list.get(i));
-                Log.i("Main Activity", list.get(i).getCategory());
-            }
+            BackupData bd = new BackupData(this);
+            bd.execute();
             return true;
         }
         return super.onOptionsItemSelected(item);
