@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -33,5 +33,6 @@ dependencies {
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.javahelps:externalsqliteimporter:+'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     testCompile 'junit:junit:4.12'
 }

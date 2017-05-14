@@ -228,4 +228,21 @@ public class MyDatabaseHelper extends SQLiteOpenHelper  {
             e.printStackTrace();
         }
     }
+    public long countIncome(){
+        long result=0;
+        try{
+            SQLiteDatabase db = this.getReadableDatabase();
+            String selectQuery = "SELECT  SUM("+COLUMN_EXPENSE_MONEY+") FROM " + TABLE_EXPENSE
+                    +" WHERE "+COLUMN_EXPENSE_CATEGORY+" = 'Deposits' OR 'Salary' OR 'Savings'";
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            // Duyệt trên con trỏ, và thêm vào danh sách.
+            if (cursor.moveToFirst()) {
+                result = cursor.getLong(0);
+            }
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

@@ -21,6 +21,7 @@ import com.example.tina.doanmang_tinakeeper.adapter.MyDatabaseHelper;
 import com.example.tina.doanmang_tinakeeper.adapter.RecyclerDataAdapter;
 import com.example.tina.doanmang_tinakeeper.model.Expense;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.gson.Gson;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -76,7 +77,7 @@ public class DayListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddEditExpenseActivity.class);
-                startActivityForResult(intent,MY_REQUEST_CODE);
+                startActivityForResult(intent,MENU_ITEM_CREATE);
             }
         });
 
@@ -84,15 +85,22 @@ public class DayListFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerview.setLayoutManager(layoutManager);
 
-        adapter = new RecyclerDataAdapter(getContext(), expenseList);
+        adapter = new RecyclerDataAdapter(getActivity(), expenseList);
+        adapter.setOnItemClickListener(new RecyclerDataAdapter.ClickListener(){
+            @Override
+            public void onItemClick(int position, View v) {
+                Gson gson = new Gson();
+                Intent intent = new Intent(getActivity(), ExpenseDetailActivity.class);
+                intent.putExtra("expense", gson.toJson(expenseList.get(position)));
+                startActivityForResult(intent,MENU_ITEM_VIEW);
+            }
+        });
         recyclerview.setAdapter(adapter);
-        // Đăng ký Context menu cho recyclerview.
-        registerForContextMenu(this.recyclerview);
         return view;
     }
     public void getFormWidgets(){
         btnGetDate= (TextView) view.findViewById(R.id.button_getdate);
-        recyclerview = (RecyclerView) view.findViewById(R.id.rv_list_day);
+        recyclerview = (RecyclerView) view.findViewById(R.id.list);
         txtTotal = (TextView) view.findViewById(R.id.txt_total);
     }
     public void getDefaultInfor() {
@@ -147,7 +155,7 @@ public class DayListFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == MY_REQUEST_CODE ) {
+        if (resultCode == Activity.RESULT_OK) {
             boolean needRefresh = data.getBooleanExtra("needRefresh",true);
             // Refresh ListView
             if(needRefresh) {

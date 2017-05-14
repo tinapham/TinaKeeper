@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="Gửi báo cáo"
+        android:text="Send data"
         android:textSize="25sp"
         android:textColor="#33691E"
         android:layout_marginTop="32dp"/>
@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn ngày"/>
+            android:text="Pick a date"/>
         <EditText
             android:id="@+id/txt_get_date"
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btn_send"
-        android:text="Gửi"
+        android:text="Send"
         android:layout_gravity="center"
         android:background="@drawable/button"
         android:textColor="#ffff" />

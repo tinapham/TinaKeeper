@@ -1,5 +1,6 @@
 package com.example.tina.doanmang_tinakeeper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity
             rm.execute();
             BackupData bd = new BackupData(this);
             bd.execute();
+            replaceFragmentContent(new DayListFragment());
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Data synchronization</string>
+    <string name="menu_refresh">Refresh</string>
     <string name="title_activity_login">Sign in</string>
 
     <!--String relate to list of category-->

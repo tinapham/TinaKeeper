@@ -1,12 +1,48 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fffd82">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#e6e6e6"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MONTH" />
+        android:text="Monthly statistic"
+        android:textAlignment="center"
+        android:padding="8dp"
+        android:textSize="24dp"
+        android:textColor="#33691E"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="8dp"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Income: "/>
+        <TextView
+            android:id="@+id/txt_income"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$2500"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="64dp"
+            android:text="Expense: "/>
+        <TextView
+            android:id="@+id/txt_outcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$1915"/>
+    </LinearLayout>
 
-</FrameLayout>
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

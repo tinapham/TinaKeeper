@@ -20,20 +20,45 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-public class RecyclerDataAdapter extends RecyclerView.Adapter<RecyclerDataAdapter.DataViewHolder> {
+public class RecyclerDataAdapter extends RecyclerView.Adapter<RecyclerDataAdapter.DataViewHolder>  {
 
     private List<Expense> expense;
     private Context context;
+
+    private static ClickListener clickListener;
     private static final int MENU_ITEM_VIEW = 111;
     private static final int MENU_ITEM_EDIT = 222;
     private static final int MENU_ITEM_CREATE = 333;
     private static final int MENU_ITEM_DELETE = 444;
     private static final int MY_REQUEST_CODE = 1000;
 
-
     public RecyclerDataAdapter(Context context, List<Expense> expense) {
         this.context = context;
         this.expense = expense;
+    }
+
+    /**
+     * Data ViewHolder class.
+     */
+    public static class DataViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private CardView cardView;
+        private TextView tvExpense;
+        private TextView tvCategory;
+        private TextView tvNote;
+        //private ImageView ivPic;
+
+        public DataViewHolder(View itemView) {
+            super(itemView);
+            cardView = (CardView) itemView.findViewById(R.id.cv);
+            tvCategory = (TextView) itemView.findViewById(R.id.category);
+            tvNote = (TextView) itemView.findViewById(R.id.notes);
+            tvExpense = (TextView) itemView.findViewById(R.id.cost_value);
+            itemView.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View v) {
+            clickListener.onItemClick(getAdapterPosition(), v);
+        }
     }
 
     @Override
@@ -43,9 +68,6 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<RecyclerDataAdapte
 
     @Override
     public RecyclerDataAdapter.DataViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View itemView;
-//        itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_row_item, parent, false);
-//        return new DataViewHolder(itemView);
 
         View view = null;
         RecyclerDataAdapter.DataViewHolder viewHolder = null;
@@ -61,6 +83,14 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<RecyclerDataAdapte
         }
         return viewHolder;
     }
+    public interface ClickListener {
+        void onItemClick(int position, View v);
+    }
+
+    public void setOnItemClickListener(ClickListener clickListener) {
+        RecyclerDataAdapter.clickListener = clickListener;
+    }
+
     @Override
     public int getItemViewType(int position) {
         String category = expense.get(position).getCategory();
@@ -81,50 +111,9 @@ public class RecyclerDataAdapter extends RecyclerView.Adapter<RecyclerDataAdapte
             holder.tvExpense.setText("-$"+String.valueOf(expense.get(position).getMoney()));
         }
         final int pos=position;
-
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ExpenseDetailActivity.class);
-                Gson gson = new Gson();
-                intent.putExtra("expense", gson.toJson(expense.get(pos)));
-                context.startActivity(intent);
-            }
-        });
     }
 
-    /**
-     * Data ViewHolder class.
-     */
-    public static class DataViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
-        private CardView cardView;
-        private TextView tvExpense;
-        private TextView tvCategory;
-        private TextView tvNote;
-        //private ImageView ivPic;
 
-        public DataViewHolder(View itemView) {
-            super(itemView);
-            cardView = (CardView) itemView.findViewById(R.id.cv);
-            tvCategory = (TextView) itemView.findViewById(R.id.category);
-            tvNote = (TextView) itemView.findViewById(R.id.notes);
-            tvExpense = (TextView) itemView.findViewById(R.id.cost_value);
-            itemView.setOnCreateContextMenuListener(this);
-        }
-
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View view,
-                                        ContextMenu.ContextMenuInfo menuInfo)    {
-
-            menu.setHeaderTitle("Select The Action");
-
-            // groupId, itemId, order, title
-            menu.add(0, MENU_ITEM_VIEW , 0, "View Expense");
-            menu.add(0, MENU_ITEM_CREATE , 1, "Create Expense");
-            menu.add(0, MENU_ITEM_EDIT , 2, "Edit Expense");
-            menu.add(0, MENU_ITEM_DELETE, 3, "Delete Expense");
-        }
-    }
 
     public void addItem(Expense item) {
         expense.add(item);

@@ -191,7 +191,6 @@ public class AddEditExpenseActivity extends AppCompatActivity implements Adapter
             db.updateExpense(expense);
         }
         this.needRefresh = true;
-        // Trở lại MainActivity.
         this.onBackPressed();
 
     }
